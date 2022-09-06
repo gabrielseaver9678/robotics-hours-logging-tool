@@ -104,7 +104,7 @@ def list_meetings_command (args):
 		if len(meetings) == 0:
 			print("The given person has not logged into any meetings.")
 		else:
-			meetingsbase.list_meetings(meetings=meetings)
+			meetingsbase.list_meetings(meetings=meetings, person=name)
 
 # Receives user input, processes it, and outputs to the console. Returns False if the user uses the exit or quit command, True otherwise
 def receive_input (user_in):

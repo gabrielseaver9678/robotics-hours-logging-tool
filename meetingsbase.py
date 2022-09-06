@@ -217,17 +217,25 @@ def __str_len (string: str, length: int):
 	return string + " " * (length - len(string))
 
 # Lists all meetings in the console
-def list_meetings (meetings=None):
+def list_meetings (meetings=None, person=None):
 	__organize_meetings_data()
 	if meetings == None:
 		meetings = __meetings
 	print("==== MEETINGS LIST ====")
-	print(__str_len("DATE", 11) + "| LABEL")
-	for meeting in meetings:
-		print(__str_len(meeting["date"], 11) + "| " + meeting["label"])
+	
+	if person == None:
+		print(__str_len("DATE", 11) + "| LABEL")
+		for meeting in meetings:
+			print(__str_len(meeting["date"], 11) + "| " + meeting["label"])
+	else:
+		print(__str_len("DATE", 11) + "| HOURS | LABEL")
+		for meeting in meetings:
+			print(__str_len(meeting["date"], 11) + "| " + __str_len(str(round(get_mins(__get_person_from_meeting(meeting, person))/6)/10), 6) + "| " + meeting["label"])
+	
 	print("Total: {} meetings".format(len(meetings)))
 
 def get_persons_meetings (name):
+	__organize_meetings_data()
 	meetings = []
 	for meeting in __meetings:
 		for person in meeting["people"]:
@@ -242,6 +250,12 @@ def get_meeting (meeting_date, meeting_label):
 	for meeting in __meetings:
 		if meeting["date"] == meeting_date and meeting["label"] == meeting_label:
 			return meeting
+	return None
+
+def __get_person_from_meeting (meeting, person_name):
+	for person in meeting["people"]:
+		if person["name"] == person_name:
+			return person
 	return None
 
 def describe_meeting (meeting):
